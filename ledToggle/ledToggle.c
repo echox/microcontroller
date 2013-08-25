@@ -7,20 +7,16 @@
 #define LED     (1<<PB2) 
 
 
-     ISR(SIG_PIN_CHANGE)
-   { 
-	cli();
-//	sleep_disable();
+ISR(SIG_PIN_CHANGE) { 
+	sleep_disable();
 		int i =0;
 		for(i=0;i<5;i++) {
-				_delay_ms(500);
-                        	PORTB ^= LED; 
-			}
-   } 
+			_delay_ms(500);
+			PORTB ^= LED; 
+		}
+} 
 
-
-int main() 
-{ 
+int main() { 
 
         /* outputs */ 
         DDRB |= LED; 
@@ -29,58 +25,46 @@ int main()
         PORTB |= BUTTON1;
 
 	PCMSK |= (1<<PCINT1);
-//	GIFR |= (1<<PCIF);
 	GIMSK |= (1<<PCIE);
-
-cli();
 
 	PORTB |= LED;
 
-//sei();
+	sei();
 
-        for (;;) { 
+        while(true) { 
 cli();
 
-	
-  //                      PORTB ^= LED; 
-//			_delay_ms(5500);
-
-                if (!(PINB & BUTTON1)) { 
+	if (!(PINB & BUTTON1)) { 
                         /* toggle led */ 
 //                        PORTB ^= LED; 
 
                         /* prinmitive debounce */ 
-                       _delay_ms(1000); 
-
-			while(!(PINB & BUTTON1)) {
+		_delay_ms(1000); 
+		
+		while(!(PINB & BUTTON1)) {
 				_delay_ms(100);
-                        	PORTB ^= LED; 
-			}
+               	        	PORTB ^= LED; 
+		}
 
-			sei();
-			sleep_enable();
-			set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-			sleep_mode();
+		sei();
+		sleep_enable();
+		set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+		sleep_mode();
+		
+		delay_ms(100);
+		PORTB ^= LED; 
+		_delay_ms(100);
+          	PORTB ^= LED; 
+		_delay_ms(1000);
+                PORTB ^= LED; 
+		_delay_ms(100);
+		PORTB ^= LED; 
+		_delay_ms(100);
+                PORTB ^= LED; 
+	}
 			
-			
-				_delay_ms(100);
-                        	PORTB ^= LED; 
-
-				_delay_ms(100);
-                        	PORTB ^= LED; 
-
-				_delay_ms(1000);
-                        	PORTB ^= LED; 
-
-				_delay_ms(100);
-                        	PORTB ^= LED; 
-
-				_delay_ms(100);
-                        	PORTB ^= LED; 
-		}			
 	} 
         
-
         /* NOTREACHED */ 
         return (0); 
 }
