@@ -13,6 +13,8 @@
 #define BLUE	(1<<PB2) 
 #define RED	(1<<PB3) 
 
+volatile uint8_t color = 0;
+
 void init() {
 
 	// enable LED
@@ -35,12 +37,13 @@ void init() {
 	// enable pin change for buttons
 	PCICR |= PCIE2;
 
-	sei();
+//	sei();
 
 }
 
 void ledTest() {
 
+_delay_ms(4000);
 		PORTB ^= RED;
 		_delay_ms(250);
 		PORTB ^= RED;
@@ -67,12 +70,10 @@ void ledTest() {
 		PORTB ^= GREEN;
 }
 
-ISR(PCINT2_vect) {
+//ISR(PCINT2_vect) {
 
-		PORTB ^= BLUE;
-		_delay_ms(200);
-		PORTB ^= BLUE;
-}
+//		PORTB ^= BLUE;
+//}
 
 int main() { 
 
@@ -83,6 +84,22 @@ int main() {
 	PORTB |= GREEN;
 	
         while(1) { 
+		_delay_ms(100);
+
+
+	if(!(PINC & BUTTON1)) {
+
+		if (color == 0) {
+			PORTB = GREEN;	
+			color=color+1;
+		} else if (color == 1) {
+			PORTB = BLUE;
+			color=color+1;
+		} else if (color == 2) {
+			PORTB = RED;
+			color=0;
+		}	
 	}
 
+	}
 }
