@@ -70,10 +70,10 @@ _delay_ms(4000);
 		PORTB ^= GREEN;
 }
 
-//ISR(PCINT2_vect) {
+ISR(PCINT2_vect) {
 
-//		PORTB ^= BLUE;
-//}
+		PORTB ^= BLUE;
+}
 
 int main() { 
 
@@ -97,9 +97,27 @@ int main() {
 			color=color+1;
 		} else if (color == 2) {
 			PORTB = RED;
+			color++;
+		} else if (color == 3) {
+			PORTB = 0;
 			color=0;
-		}	
+		}
+
+	}
+
+
+	if(!(PINC & BUTTON2)) {
+		PORTB ^= GREEN;
+	}
+
+	if(!(PINC & BUTTON3)) {
+		PORTB ^= RED;
+	}
+
+	if(!(PINC & BUTTON4)) {
+		PORTB ^= BLUE;
 	}
 
 	}
+
 }
