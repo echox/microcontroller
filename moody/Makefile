@@ -12,7 +12,7 @@ ERASECMD       = uisp -dprog=bsd --erase
 SERIAL = /dev/ttyUSB0
 
 
-DEFS		= -DF_CPU=1600000
+DEFS		= -DF_CPU=16000000
 LIBS           =
 
 # You should not have to change anything below here.
